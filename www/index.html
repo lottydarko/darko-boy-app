@@ -2,74 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#262231">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>DARKO-BOY</title>
 <link rel="icon" href="icon.png">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%}
-  body{background:#17141f;font-family:'Courier New',monospace;display:flex;align-items:center;justify-content:center}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+  html,body{height:100%;width:100%}
+  body{
+    background:#17141f;font-family:'Courier New',monospace;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
   .boy{
-    height:100dvh;width:100%;max-width:480px;margin:0 auto;
+    height:100dvh;width:100%;max-width:460px;margin:0 auto;
     background:linear-gradient(165deg,#4a4458,#332e40 60%,#262231);
-    border-radius:0;padding:3dvh 6vw calc(2.4dvh + env(safe-area-inset-bottom));
-    display:flex;flex-direction:column;gap:2dvh;
-    box-shadow:inset 0 0 0 3px rgba(255,255,255,.08),inset 0 -18px 34px rgba(0,0,0,.45);
+    border-radius:0;
+    padding:calc(2.4dvh + env(safe-area-inset-top)) 6vw calc(2.2dvh + env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;gap:1.8dvh;
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.08),inset 0 -18px 34px rgba(0,0,0,.45),0 24px 60px rgba(0,0,0,.85);
   }
-  @media(min-width:560px){.boy{border-radius:28px;height:96dvh}}
+  @media(min-width:560px){
+    .boy{
+      width:min(92vw, 52vh);
+      height:min(92vh, 92.4vw);
+      max-width:460px;
+      max-height:818px;
+      border-radius:28px;
+      padding:22px 24px 20px;
+    }
+  }
   .brand{display:flex;justify-content:space-between;align-items:center;color:#cfc8e8}
-  .brand b{letter-spacing:.24em;font-size:clamp(15px,4.6vw,20px)}
-  .brand .led{width:11px;height:11px;border-radius:50%;background:#ff4757;box-shadow:0 0 9px #ff4757}
-  .screen{
-    background:#9bbc0f;border-radius:12px 12px 34px 12px;padding:14px 14px 12px;
-    box-shadow:inset 0 0 0 4px #6b8f23,inset 0 0 34px rgba(27,42,6,.45);
-    color:#1b2a06;min-height:38dvh;display:flex;flex-direction:column;
+  .brand b{letter-spacing:.22em;font-size:clamp(15px,4.5vw,20px)}
+  .signal-group{display:flex;align-items:center;gap:7px}
+  .signal-txt{font-size:10px;letter-spacing:.18em;color:#b8b0d4}
+  .led{
+    width:11px;height:11px;border-radius:50%;
+    background:#4b3f63;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5);
+    transition:background .15s ease,box-shadow .15s ease;
   }
-  .scr-head{font-size:11px;letter-spacing:.18em;border-bottom:2px solid #1b2a06;padding-bottom:6px;display:flex;justify-content:space-between}
-  .scr-body{flex:1;padding-top:10px;font-size:clamp(13px,3.8vw,16px);line-height:1.5;overflow:auto}
-  .cart-row{padding:9px 8px;border:2px solid transparent;cursor:pointer;display:flex;justify-content:space-between;gap:8px}
-  .cart-row.sel{border-color:#1b2a06;background:rgba(27,42,6,.12)}
-  .cart-row.locked{opacity:.45}
-  .pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:112px;margin:4px 0 10px}
+  .led.loading{background:#ffb648;box-shadow:0 0 9px #ffb648;animation:ledPulse .6s ease-in-out infinite}
+  .led.live{background:#38e54d;box-shadow:0 0 10px #38e54d}
+  .led.err{background:#ff4757;box-shadow:0 0 9px #ff4757}
+  @keyframes ledPulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+  .screen{
+    background:#9bbc0f;border-radius:12px 12px 34px 12px;padding:12px 13px 11px;
+    box-shadow:inset 0 0 0 4px #6b8f23,inset 0 0 34px rgba(27,42,6,.45);
+    color:#1b2a06;flex:1;min-height:0;display:flex;flex-direction:column;
+  }
+  .scr-head{font-size:10.5px;letter-spacing:.16em;border-bottom:2px solid #1b2a06;padding-bottom:5px;display:flex;justify-content:space-between;font-weight:bold}
+  .scr-body{flex:1;min-height:0;padding-top:9px;font-size:clamp(12.5px,3.6vw,15px);line-height:1.45;overflow-y:auto}
+  .cart-row{padding:8px;border:2px solid transparent;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:bold}
+  .cart-row.sel{border-color:#1b2a06;background:rgba(27,42,6,.14)}
+  .cart-row.locked{opacity:.45;cursor:not-allowed}
+  .pix{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:96px;margin:2px 0 8px}
   .pix i{display:block;padding-top:100%}
-  .lvl{padding:8px;border:2px solid transparent;cursor:pointer;display:flex;justify-content:space-between}
-  .lvl.sel{border-color:#1b2a06;background:rgba(27,42,6,.12)}
-  .lvl.locked{opacity:.45}
+  .lvl{padding:7px 8px;border:2px solid transparent;cursor:pointer;display:flex;justify-content:space-between;font-weight:bold}
+  .lvl.sel{border-color:#1b2a06;background:rgba(27,42,6,.14)}
+  .lvl.locked{opacity:.45;cursor:not-allowed}
   .blink{animation:blink 1.1s steps(2) infinite}
   @keyframes blink{50%{opacity:0}}
-  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
-  .dpad{position:relative;width:118px;height:118px}
-  .dpad button{position:absolute;background:#1d1a28;border:none;color:#8f88ad;cursor:pointer;font-size:15px;box-shadow:0 4px 0 #0c0a12}
+
+  .controls{display:flex;justify-content:space-between;align-items:center;padding-top:4px}
+  .dpad{position:relative;width:114px;height:114px}
+  .dpad button{position:absolute;background:#1d1a28;border:none;color:#8f88ad;cursor:pointer;font-size:14px;box-shadow:0 4px 0 #0c0a12}
   .dpad button:active{transform:translateY(3px);box-shadow:0 1px 0 #0c0a12}
-  .d-up{top:0;left:39px;width:40px;height:40px;border-radius:7px 7px 0 0}
-  .d-down{bottom:0;left:39px;width:40px;height:40px;border-radius:0 0 7px 7px}
-  .d-left{left:0;top:39px;width:40px;height:40px;border-radius:7px 0 0 7px}
-  .d-right{right:0;top:39px;width:40px;height:40px;border-radius:0 7px 7px 0}
-  .d-mid{top:39px;left:39px;width:40px;height:40px;background:#1d1a28}
+  .d-up{top:0;left:38px;width:38px;height:38px;border-radius:7px 7px 0 0}
+  .d-down{bottom:0;left:38px;width:38px;height:38px;border-radius:0 0 7px 7px}
+  .d-left{left:0;top:38px;width:38px;height:38px;border-radius:7px 0 0 7px}
+  .d-right{right:0;top:38px;width:38px;height:38px;border-radius:0 7px 7px 0}
+  .d-mid{top:38px;left:38px;width:38px;height:38px;background:#1d1a28}
   .ab{display:flex;gap:14px;transform:rotate(-14deg)}
-  .ab button{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;font-weight:bold;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.45)}
+  .ab button{width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;font-weight:bold;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.45)}
   .ab button:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
   .btn-a{background:#c2185b}.btn-b{background:#7b1fa2}
   .ab-lab{display:flex;gap:14px;justify-content:space-around;color:#8f88ad;font-size:11px;letter-spacing:.2em;margin-top:6px;transform:rotate(-14deg)}
   .pills{display:flex;gap:18px;justify-content:center}
   .pills button{background:#57506e;border:none;color:#d8d2f0;border-radius:999px;padding:7px 18px;font-family:inherit;letter-spacing:.18em;font-size:11px;cursor:pointer;box-shadow:0 3px 0 #14111d}
-  .hint{color:#6f6890;font-size:11px;text-align:center;letter-spacing:.14em}
+  .pills button:active{transform:translateY(2px);box-shadow:0 1px 0 #14111d}
+  .hint{color:#8f88ad;font-size:10px;text-align:center;letter-spacing:.14em}
+  @media (prefers-reduced-motion: reduce){.led.loading,.blink{animation:none !important}}
 </style>
 </head>
 <body>
 <div class="boy">
-  <div class="brand"><b>DARKO-BOY</b><span style="font-size:11px;letter-spacing:.2em">BATTERY</span><span class="led"></span></div>
+  <div class="brand">
+    <b>DARKO-BOY</b>
+    <div class="signal-group">
+      <span class="signal-txt" id="sigTxt">STANDBY</span>
+      <span class="led" id="sigLed"></span>
+    </div>
+  </div>
   <section class="screen">
-    <div class="scr-head"><span id="scrTitle">CARTRIDGE SELECT</span><span id="scrClock">VOL 85</span></div>
+    <div class="scr-head"><span id="scrTitle">CARTRIDGE SELECT</span><span>lottydarko</span></div>
     <div class="scr-body" id="scrBody"></div>
   </section>
   <div class="controls">
     <div class="dpad">
-      <button class="d-up" id="dUp">&#9650;</button>
-      <button class="d-left" id="dLeft">&#9664;</button>
+      <button class="d-up" id="dUp" aria-label="Up">&#9650;</button>
+      <button class="d-left" id="dLeft" aria-label="Back">&#9664;</button>
       <div class="d-mid"></div>
-      <button class="d-right" id="dRight">&#9654;</button>
-      <button class="d-down" id="dDown">&#9660;</button>
+      <button class="d-right" id="dRight" aria-label="Select">&#9654;</button>
+      <button class="d-down" id="dDown" aria-label="Down">&#9660;</button>
     </div>
     <div>
       <div class="ab">
@@ -83,114 +119,219 @@
     <button id="btnSelect">SELECT</button>
     <button id="btnStart">START</button>
   </div>
-  <div class="hint">D-PAD + A, OR JUST TAP &middot; SONGS PLAY FROM REAL FILES</div>
+  <div class="hint">D-PAD + A, OR TAP &middot; BUNDLED AUDIO &middot; LOTTYDARKO</div>
 </div>
-<audio id="audio" preload="none"></audio>
+<audio id="audio" preload="none" playsinline></audio>
 <script>
   var CARTS = [
-    { title:'FACES', file:'faces.mp3', pal:['#1b2a06','#2f4d0a','#9bbc0f','#dce775','#2f4d0a','#1b2a06','#9bbc0f','#2f4d0a'],
-      meta:'EMPIRE &middot; OUT NOV 20, 2026 &middot; ISRC USUYG1845862',
-      story:'Irish and Celtic roots. Composed by hand before the drums went on &mdash; a hypnotic draw, Irish Vikings taking another boat&rsquo;s plunder, epic vocals like captivity singing. Folk pull from <i>Sinners</i>, Frank Ticheli and Tchaikovsky underneath.' },
-    { title:'A THOUSAND WAYS', file:'a-thousand-ways.mp3', pal:['#2f4d0a','#9bbc0f','#1b2a06','#dce775','#1b2a06','#2f4d0a','#dce775','#9bbc0f'],
-      meta:'DISTROKID &middot; SINGLE',
-      lyrics:'[VERSE 1]<br>if you had a boat, would you die in the ocean<br>easy to say, but you don&rsquo;t have a boat<br>it&rsquo;s easy to stay when you&rsquo;re already in motion<br>it&rsquo;s harder to do what they say when you&rsquo;re told<br><br>[CHORUS]<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br><br>[VERSE 2]<br>it&rsquo;s easy to live when you&rsquo;ve found your emotion<br>no need to judge, i won&rsquo;t run if you don&rsquo;t<br>sometimes i feel like i&rsquo;m on a rollercoaster<br>sometimes i feel like a burnt piece of toast<br><br>[PRE-CHORUS]<br>easy to give, easy to lie<br>do you have the eyes it takes to stay alive<br>easy as this, simple as pie<br>do you know the odds you will remain alive<br><br>[CHORUS]<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br><br>[VERSE 3]<br>blow me a kiss, like a goodbye<br>it&rsquo;s not the same, just a similar notion<br>if you agree, like what you see<br>send me a sign of your love and devotion<br><br>[BRIDGE]<br>it&rsquo;s easy to sin, it&rsquo;s easy to fly<br>just look at the sun and you can tell the time<br>it&rsquo;s more than a gift, it&rsquo;s more than a light<br>just say what&rsquo;s inside and you&rsquo;ll begin to shine<br><br>[OUTRO]<br>the moment is real, i don&rsquo;t need no more than one<br>because it&rsquo;s more than a thousand ways to stay alive<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br>i said it&rsquo;s easy to live, it&rsquo;s easy to die<br>it&rsquo;s more than a thousand ways to stay alive<br><br><span style="font-size:11px">LYRICS AS PUBLISHED &middot; LIRIKCINTA.COM</span>',
-      story:'Groovy alt-pop in a Billie Jean / Nirvana pocket &mdash; funk-tinged indie rock, 90s-alt revival. In rotation: idobi Anthm (42 spins), KX Radio, Sound Frontier FM, flick Radio.' },
-    { title:'THE PASSION INSIDE', file:'the-passion-inside.mp3', pal:['#9bbc0f','#dce775','#2f4d0a','#1b2a06','#dce775','#9bbc0f','#1b2a06','#2f4d0a'],
-      meta:'EMPIRE &middot; OUT OCT 23, 2026 &middot; CLEAN',
-      story:'Built from a Beach Boys record, Red Hot Chili Peppers, and Nirvana&rsquo;s &ldquo;Polly.&rdquo; Regular rotation on KX Radio; added by Shoreditch Radio Nov 2, 2026.' }
+    {
+      title: 'FACES',
+      credit: '"Faces" \u2014 lottydarko',
+      file: 'faces.mp3',
+      pal: ['#1b2a06','#2f4d0a','#9bbc0f','#dce775','#2f4d0a','#1b2a06','#9bbc0f','#2f4d0a'],
+      meta: 'EMPIRE \u00b7 OUT NOV 20, 2026 \u00b7 ISRC USUYG1845862',
+      story: 'Irish and Celtic roots. Composed by hand before the drums went on \u2014 a hypnotic draw, Irish Vikings taking another boat\u2019s plunder, epic vocals like captivity singing. Folk pull from <i>Sinners</i>, Frank Ticheli and Tchaikovsky underneath.'
+    },
+    {
+      title: 'A THOUSAND WAYS',
+      credit: '"A Thousand Ways" \u2014 lottydarko',
+      file: 'a-thousand-ways.mp3',
+      pal: ['#2f4d0a','#9bbc0f','#1b2a06','#dce775','#1b2a06','#2f4d0a','#dce775','#9bbc0f'],
+      meta: 'DISTROKID \u00b7 SINGLE',
+      lyrics: '[VERSE 1]<br>if you had a boat, would you die in the ocean<br>easy to say, but you don\u2019t have a boat<br>it\u2019s easy to stay when you\u2019re already in motion<br>it\u2019s harder to do what they say when you\u2019re told<br><br>[CHORUS]<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br><br>[VERSE 2]<br>it\u2019s easy to live when you\u2019ve found your emotion<br>no need to judge, i won\u2019t run if you don\u2019t<br>sometimes i feel like i\u2019m on a rollercoaster<br>sometimes i feel like a burnt piece of toast<br><br>[PRE-CHORUS]<br>easy to give, easy to lie<br>do you have the eyes it takes to stay alive<br>easy as this, simple as pie<br>do you know the odds you will remain alive<br><br>[CHORUS]<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br><br>[VERSE 3]<br>blow me a kiss, like a goodbye<br>it\u2019s not the same, just a similar notion<br>if you agree, like what you see<br>send me a sign of your love and devotion<br><br>[BRIDGE]<br>it\u2019s easy to sin, it\u2019s easy to fly<br>just look at the sun and you can tell the time<br>it\u2019s more than a gift, it\u2019s more than a light<br>just say what\u2019s inside and you\u2019ll begin to shine<br><br>[OUTRO]<br>the moment is real, i don\u2019t need no more than one<br>because it\u2019s more than a thousand ways to stay alive<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br>i said it\u2019s easy to live, it\u2019s easy to die<br>it\u2019s more than a thousand ways to stay alive<br><br><span style="font-size:11px">LYRICS AS PUBLISHED \u00b7 LIRIKCINTA.COM</span>',
+      story: 'Groovy alt-pop in a Billie Jean / Nirvana pocket \u2014 funk-tinged indie rock, 90s-alt revival. In rotation: idobi Anthm (42 spins), KX Radio, Sound Frontier FM, flick Radio.'
+    },
+    {
+      title: 'THE PASSION INSIDE',
+      credit: '"The Passion Inside" \u2014 lottydarko',
+      file: 'the-passion-inside.mp3',
+      pal: ['#9bbc0f','#dce775','#2f4d0a','#1b2a06','#dce775','#9bbc0f','#1b2a06','#2f4d0a'],
+      meta: 'EMPIRE \u00b7 OUT OCT 23, 2026 \u00b7 CLEAN',
+      story: 'Built from a Beach Boys record, Red Hot Chili Peppers, and Nirvana\u2019s \u201cPolly.\u201d Regular rotation on KX Radio; added by Shoreditch Radio Nov 2, 2026.'
+    }
   ];
+
   var audio = document.getElementById('audio');
-  var body = document.getElementById('scrBody'), title = document.getElementById('scrTitle');
-  var view = 'carts', sel = 0, cartIdx = 0;
-  var unlocked = [true,false,false];
-  var done = CARTS.map(function(){ return {listen:false, story:false}; });
+  var body = document.getElementById('scrBody'),
+      title = document.getElementById('scrTitle'),
+      sigLed = document.getElementById('sigLed'),
+      sigTxt = document.getElementById('sigTxt');
+
+  var view = 'carts', sel = 0, cartIdx = 0, activeFile = null;
+  var unlocked = [true, false, false];
+  var done = CARTS.map(function(){ return { listen: false, story: false }; });
   var listenedSec = 0, listenTimer = null;
+
+  function setSignal(cls, label){
+    sigLed.className = 'led' + (cls ? ' ' + cls : '');
+    sigTxt.textContent = label;
+  }
 
   function pixHTML(pal){
     var h = '<div class="pix">';
-    for(var i=0;i<32;i++){ h += '<i style="background:' + pal[(i*7+3)%pal.length] + '"></i>'; }
+    for(var i = 0; i < 32; i++){
+      h += '<i style="background:' + pal[(i * 7 + 3) % pal.length] + '"></i>';
+    }
     return h + '</div>';
   }
+
   function render(){
-    if(view==='carts'){
+    if(view === 'carts'){
       title.textContent = 'CARTRIDGE SELECT';
-      var h = '<div style="margin-bottom:8px">INSERT CARTRIDGE:</div>';
-      CARTS.forEach(function(c,i){
-        h += '<div class="cart-row' + (i===sel?' sel':'') + (unlocked[i]?'':' locked') + '" data-i="' + i + '">'
-           + '<span>' + (i===sel?'&#9654; ':'') + c.title + '</span><span>' + (unlocked[i] ? (done[i].listen&&done[i].story?'CLEAR!':'IN') : 'LOCKED') + '</span></div>';
+      var h = '<div style="margin-bottom:8px;font-weight:bold">INSERT CARTRIDGE:</div>';
+      CARTS.forEach(function(c, i){
+        var statusTag = unlocked[i] ? (done[i].listen && done[i].story ? 'CLEAR!' : 'READY') : 'LOCKED';
+        h += '<div class="cart-row' + (i === sel ? ' sel' : '') + (unlocked[i] ? '' : ' locked') + '" data-i="' + i + '">'
+           + '<span>' + (i === sel ? '&#9654; ' : '') + c.title + '</span><span>' + statusTag + '</span></div>';
       });
-      h += '<div style="margin-top:10px;font-size:12px">CLEAR L1 + L3 TO UNLOCK THE NEXT CART.</div>';
+      h += '<div style="margin-top:10px;font-size:11.5px;font-weight:bold">CLEAR L1 + L3 TO UNLOCK THE NEXT CARTRIDGE.</div>';
       body.innerHTML = h;
-      body.querySelectorAll('.cart-row').forEach(function(r){ r.addEventListener('click', function(){ sel=+r.dataset.i; render(); choose(); }); });
-    } else if(view==='cart'){
+      body.querySelectorAll('.cart-row').forEach(function(r){
+        r.addEventListener('click', function(){
+          sel = +r.dataset.i;
+          render();
+          choose();
+        });
+      });
+    } else if(view === 'cart'){
       var c = CARTS[cartIdx];
       title.textContent = c.title;
       var lv = [
-        {n:'L1 &middot; LISTEN', s: done[cartIdx].listen?'CLEAR':'PLAY THE SONG', lock:false},
-        {n:'L2 &middot; LYRICS', s: c.lyrics?'READ IT':'COMING SOON', lock: !c.lyrics},
-        {n:'L3 &middot; THE STORY', s: done[cartIdx].story?'CLEAR':'READ IT', lock:false}
+        { n: 'L1 &middot; LISTEN', s: done[cartIdx].listen ? 'CLEAR' : 'PLAY TRACK', lock: false },
+        { n: 'L2 &middot; LYRICS', s: c.lyrics ? 'READ' : 'COMING SOON', lock: !c.lyrics },
+        { n: 'L3 &middot; STORY', s: done[cartIdx].story ? 'CLEAR' : 'READ', lock: false }
       ];
-      var h = pixHTML(c.pal) + '<div style="font-size:12px;margin-bottom:8px">' + c.meta + '</div>';
-      lv.forEach(function(l,i){
-        h += '<div class="lvl' + (i===sel?' sel':'') + (l.lock?' locked':'') + '" data-i="' + i + '"><span>' + (i===sel?'&#9654; ':'') + l.n + '</span><span>' + l.s + '</span></div>';
+      var h = pixHTML(c.pal)
+            + '<div style="font-size:12px;font-weight:bold;margin-bottom:2px">&#9834; ' + c.credit + '</div>'
+            + '<div style="font-size:11px;margin-bottom:8px">' + c.meta + '</div>';
+      lv.forEach(function(l, i){
+        h += '<div class="lvl' + (i === sel ? ' sel' : '') + (l.lock ? ' locked' : '') + '" data-i="' + i + '"><span>' + (i === sel ? '&#9654; ' : '') + l.n + '</span><span>' + l.s + '</span></div>';
       });
-      h += '<div id="playState" style="margin-top:8px;font-size:12px">' + (audio.paused?'PRESS A ON L1 TO PLAY':'&#9836; PLAYING&hellip; <span class="blink">&#9612;</span>') + '</div>';
+      var playNote = audio.paused
+        ? 'PRESS A ON L1 TO PLAY'
+        : '&#9834; PLAYING&hellip; <span class="blink">&#9612;</span>';
+      h += '<div id="playState" style="margin-top:8px;font-size:11.5px;font-weight:bold">' + playNote + '</div>';
       body.innerHTML = h;
-      body.querySelectorAll('.lvl').forEach(function(r){ r.addEventListener('click', function(){ sel=+r.dataset.i; render(); choose(); }); });
-    } else if(view==='lyrics'){
+      body.querySelectorAll('.lvl').forEach(function(r){
+        r.addEventListener('click', function(){
+          sel = +r.dataset.i;
+          render();
+          choose();
+        });
+      });
+    } else if(view === 'lyrics'){
       title.textContent = 'L2 &middot; LYRICS';
-      body.innerHTML = '<div style="font-size:13px;line-height:1.65">' + CARTS[cartIdx].lyrics + '</div><div style="margin-top:12px;font-size:12px">PRESS B TO GO BACK</div>';
-    } else if(view==='story'){
+      body.innerHTML = '<div style="font-size:12.5px;line-height:1.6">' + CARTS[cartIdx].lyrics + '</div><div style="margin-top:12px;font-size:11.5px;font-weight:bold">PRESS B TO GO BACK</div>';
+    } else if(view === 'story'){
       var c2 = CARTS[cartIdx];
-      title.textContent = 'L3 &middot; THE STORY';
-      body.innerHTML = '<div style="font-size:14px">' + c2.story + '</div><div style="margin-top:12px;font-size:12px">PRESS B TO GO BACK</div>';
+      title.textContent = 'L3 &middot; STORY';
+      body.innerHTML = '<div style="font-size:13.5px;line-height:1.5">' + c2.story + '</div><div style="margin-top:12px;font-size:11.5px;font-weight:bold">PRESS B TO GO BACK</div>';
     }
   }
+
   function startListenTimer(){
     stopListenTimer();
     listenTimer = setInterval(function(){
-      if(!audio.paused){ listenedSec++; if(listenedSec>=15){ completeListen(); } }
-    },1000);
+      if(!audio.paused){
+        listenedSec++;
+        if(listenedSec >= 15){ completeListen(); }
+      }
+    }, 1000);
   }
-  function stopListenTimer(){ if(listenTimer){ clearInterval(listenTimer); listenTimer=null; } }
+  function stopListenTimer(){
+    if(listenTimer){ clearInterval(listenTimer); listenTimer = null; }
+  }
   function completeListen(){
     if(!done[cartIdx].listen){
-      done[cartIdx].listen = true; stopListenTimer(); checkUnlock(); render();
+      done[cartIdx].listen = true;
+      stopListenTimer();
+      checkUnlock();
+      render();
     }
   }
   function checkUnlock(){
-    for(var i=0;i<CARTS.length-1;i++){
-      if(done[i].listen && done[i].story){ unlocked[i+1] = true; }
+    for(var i = 0; i < CARTS.length - 1; i++){
+      if(done[i].listen && done[i].story){ unlocked[i + 1] = true; }
     }
   }
-  function choose(){
-    if(view==='carts'){
-      if(!unlocked[sel]){ return; }
-      cartIdx = sel; sel = 0; view = 'cart'; listenedSec = 0; render();
-    } else if(view==='cart'){
-      if(sel===0){
-        var c = CARTS[cartIdx];
-        if(audio.src.indexOf(c.file)===-1){ audio.src = c.file; listenedSec = 0; }
-        if(audio.paused){ audio.play(); startListenTimer(); } else { audio.pause(); }
+
+  function playCartAudio(c){
+    if(activeFile !== c.file){
+      audio.pause();
+      activeFile = c.file;
+      listenedSec = 0;
+      audio.src = c.file;
+      audio.load();
+    }
+    setSignal('loading', 'LOADING');
+    var p = audio.play();
+    if(p && typeof p.catch === 'function'){
+      p.catch(function(){
+        setSignal('err', 'NO SIGNAL');
         render();
-      } else if(sel===1){
-        if(CARTS[cartIdx].lyrics){ view = 'lyrics'; render(); }
-        return;
-      } else if(sel===2){
-        view = 'story'; done[cartIdx].story = true; checkUnlock(); render();
+      });
+    }
+    startListenTimer();
+    render();
+  }
+
+  function choose(){
+    if(view === 'carts'){
+      if(!unlocked[sel]){ return; }
+      cartIdx = sel;
+      sel = 0;
+      view = 'cart';
+      listenedSec = 0;
+      render();
+    } else if(view === 'cart'){
+      if(sel === 0){
+        var c = CARTS[cartIdx];
+        if(audio.paused || activeFile !== c.file){
+          playCartAudio(c);
+        } else {
+          audio.pause();
+          render();
+        }
+      } else if(sel === 1){
+        if(CARTS[cartIdx].lyrics){
+          view = 'lyrics';
+          render();
+        }
+      } else if(sel === 2){
+        view = 'story';
+        done[cartIdx].story = true;
+        checkUnlock();
+        render();
       }
     }
   }
+
   function back(){
-    if(view==='story'){ view='cart'; sel=2; render(); }
-    else if(view==='lyrics'){ view='cart'; sel=1; render(); }
-    else if(view==='cart'){ audio.pause(); stopListenTimer(); view='carts'; sel=cartIdx; render(); }
+    if(view === 'story'){ view = 'cart'; sel = 2; render(); return true; }
+    if(view === 'lyrics'){ view = 'cart'; sel = 1; render(); return true; }
+    if(view === 'cart'){
+      audio.pause();
+      activeFile = null;
+      stopListenTimer();
+      setSignal('', 'STANDBY');
+      view = 'carts';
+      sel = cartIdx;
+      render();
+      return true;
+    }
+    return false;
   }
+
   function move(d){
-    var max = (view==='carts') ? CARTS.length-1 : 2;
-    if(view==='story' || view==='lyrics'){ return; }
-    sel = Math.max(0, Math.min(max, sel + d)); render();
+    if(view === 'story' || view === 'lyrics'){
+      body.scrollTop += d * 48;
+      return;
+    }
+    var max = (view === 'carts') ? CARTS.length - 1 : 2;
+    sel = Math.max(0, Math.min(max, sel + d));
+    render();
   }
+
   document.getElementById('dUp').addEventListener('click', function(){ move(-1); });
   document.getElementById('dDown').addEventListener('click', function(){ move(1); });
   document.getElementById('dLeft').addEventListener('click', back);
@@ -199,13 +340,64 @@
   document.getElementById('btnB').addEventListener('click', back);
   document.getElementById('btnStart').addEventListener('click', choose);
   document.getElementById('btnSelect').addEventListener('click', back);
+
   document.addEventListener('keydown', function(e){
-    if(e.key==='ArrowUp'){ move(-1); } else if(e.key==='ArrowDown'){ move(1); }
-    else if(e.key==='Enter' || e.key==='a'){ choose(); } else if(e.key==='Escape' || e.key==='b'){ back(); }
+    if(e.key === 'ArrowUp'){ move(-1); }
+    else if(e.key === 'ArrowDown'){ move(1); }
+    else if(e.key === 'Enter' || e.key === 'a' || e.key === 'A'){ choose(); }
+    else if(e.key === 'Escape' || e.key === 'b' || e.key === 'B'){ back(); }
   });
-  audio.addEventListener('ended', completeListen);
+
+  audio.addEventListener('playing', function(){
+    setSignal('live', 'PLAYING');
+    if(view === 'cart'){ render(); }
+  });
+  audio.addEventListener('waiting', function(){
+    setSignal('loading', 'LOADING');
+  });
+  audio.addEventListener('pause', function(){
+    if(!audio.ended && activeFile){
+      setSignal('', 'PAUSED');
+      if(view === 'cart'){ render(); }
+    }
+  });
+  audio.addEventListener('ended', function(){
+    setSignal('', 'COMPLETE');
+    completeListen();
+  });
+  audio.addEventListener('error', function(){
+    if(activeFile){
+      setSignal('err', 'NO SIGNAL');
+      if(view === 'cart'){ render(); }
+    }
+  });
+
   audio.volume = 0.85;
   render();
+
+  /* Native Capacitor initialization */
+  (function initNative(){
+    var Cap = window.Capacitor;
+    if(!Cap || !Cap.Plugins) return;
+    var P = Cap.Plugins;
+    if(P.StatusBar){
+      P.StatusBar.setStyle({ style: 'DARK' }).catch(function(){});
+      P.StatusBar.setBackgroundColor({ color: '#262231' }).catch(function(){});
+    }
+    if(P.ScreenOrientation){
+      P.ScreenOrientation.lock({ orientation: 'portrait' }).catch(function(){});
+    }
+    if(P.SplashScreen){
+      P.SplashScreen.hide().catch(function(){});
+    }
+    if(P.App){
+      P.App.addListener('backButton', function(){
+        if(!back() && P.App.minimizeApp){
+          P.App.minimizeApp();
+        }
+      });
+    }
+  })();
 </script>
 </body>
 </html>
